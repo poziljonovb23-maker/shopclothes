@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRO Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Poppins',sans-serif;background:#0f172a;color:white}
+header{padding:15px;text-align:center;background:#111827;font-size:22px;font-weight:bold}
+.container{padding:15px}
+
+.search{margin-bottom:10px}
+.search input{width:100%;padding:12px;border-radius:10px;border:none;background:#1f2937;color:white}
+
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.card{background:#1f2937;padding:10px;border-radius:15px;text-align:center;transition:0.3s}
+.card:hover{transform:scale(1.05)}
+.card img{width:100%;border-radius:12px}
+button{margin-top:8px;padding:10px;width:100%;border:none;border-radius:10px;background:#6366f1;color:white;font-weight:600}
+
+.cart{margin-top:20px;background:#1f2937;padding:12px;border-radius:15px}
+.cart h3{text-align:center}
+.order{margin-top:10px}
+.order input{width:100%;padding:10px;margin-top:5px;border-radius:8px;border:none;background:#111827;color:white}
+.order button{background:#10b981}
+</style>
+</head>
+<body>
+<header>🛍 PRO Online Shop</header>
+
+<div class="container">
+
+<div class="search">
+<input type="text" id="search" placeholder="Qidirish..." onkeyup="searchProduct()">
+</div>
+
+<div class="products" id="products"></div>
+
+<div class="cart">
+<h3>Savat</h3>
+<ul id="cart"></ul>
+<h4 id="total">Jami: 0</h4>
+
+<div class="order">
+<input type="text" id="name" placeholder="Ismingiz">
+<input type="text" id="phone" placeholder="Telefon raqam">
+<button onclick="order()">Buyurtma berish</button>
+</div>
+</div>
+
+</div>
+
+<script>
+let products=[
+{name:"Futbolka",price:50000,img:"https://via.placeholder.com/200"},
+{name:"Kurtka",price:120000,img:"https://via.placeholder.com/200"},
+{name:"Shim",price:80000,img:"https://via.placeholder.com/200"},
+{name:"Krossovka",price:150000,img:"https://via.placeholder.com/200"}
+];
+
+let filtered=[...products];
+let cart=[];
+
+function renderProducts(){
+let p=document.getElementById('products');
+p.innerHTML='';
+filtered.forEach((item,i)=>{
+p.innerHTML+=`
+<div class="card">
+<img src="${item.img}">
+<h4>${item.name}</h4>
+<p>${item.price} so'm</p>
+<button onclick="addToCart(${i})">Savatga qo‘shish</button>
+</div>`;
+});
+}
+
+function addToCart(i){
+cart.push(filtered[i]);
+renderCart();
+}
+
+function renderCart(){
+let c=document.getElementById('cart');
+c.innerHTML='';
+let total=0;
+cart.forEach(item=>{
+c.innerHTML+=`<li>${item.name} - ${item.price}</li>`;
+total+=item.price;
+});
+document.getElementById('total').innerText="Jami: "+total+" so'm";
+}
+
+function searchProduct(){
+let val=document.getElementById('search').value.toLowerCase();
+filtered=products.filter(p=>p.name.toLowerCase().includes(val));
+renderProducts();
+}
+
+function order(){
+let name=document.getElementById('name').value;
+let phone=document.getElementById('phone').value;
+
+if(!name || !phone || cart.length==0){
+alert("Ma'lumotlarni to‘ldiring");
+return;
+}
+
+alert("Buyurtma qabul qilindi! Tez orada siz bilan bog‘lanamiz");
+cart=[];
+renderCart();
+}
+
+renderProducts();
+</script>
+</body>
+</html>
